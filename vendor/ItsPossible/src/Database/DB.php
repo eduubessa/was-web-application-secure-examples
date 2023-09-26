@@ -99,19 +99,50 @@ class DB {
         return $this;
     }
 
-    public function get(): void
+    public function get(): array|false
     {
         $stmt = $this->connection->prepare($this->query);
 
         foreach($this->values as $col => $val){
-            $stmt->bindValue(":{$col}", $val, is_int($val) or is_bool($val) ? PDO::PARAM_INT : PDO::PARAM_STR);
+            $stmt->bindValue(":{$col}", $val);
         }
 
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
-        dd($result);
+    public function insert(array $data): void
+    {
+        $this->query = "INSERT INTO {$this->table} (";
+
+        $i = 0;
+        foreach($data as $col => $val)
+        {
+            $i++;
+            $this->query .= (count($data) > $i) ? "{$col}, " : $col;
+        }
+
+        $this->query .= ") VALUES (";
+
+        $i = 0;
+        foreach($data as $col => $val)
+        {
+            $i++;
+            $this->query .= (count($data) > $i) ? ":{$col}, " : ":{$col}";
+        }
+
+        $this->query .= ");";
+
+
+        $stmt = $this->connection->prepare($this->query);
+
+        foreach($data as $col => $val)
+        {
+            $stmt->bindValue(":{$col}", $val);
+        }
+
+        $stmt->execute();
     }
 
 }

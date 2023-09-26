@@ -15,11 +15,18 @@ class LoginApiController extends Controller {
     private function loginAttempt(string $username, string $password): void
     {
         $db = new DB();
-        $db->table('users')->select()
-            ->where('username', $username)
-            ->where('password', $password)
-            ->where('is_activated', 1)
-            ->get();
+        $users = $db->table('users')->select()
+                    ->where('username', $username)
+                    ->get();
+
+        foreach($users as $user)
+        {
+            if(password_verify($password, $user->password)) {
+                echo "Logged";
+            }else{
+                echo "Not logged";
+            }
+        }
     }
 
 }
