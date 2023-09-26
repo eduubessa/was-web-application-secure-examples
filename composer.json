@@ -1,0 +1,32 @@
+{
+    "name": "eduubessa/web-application-secure-examples",
+    "description": "Web Application Secure Example to Apply on PHP Projects",
+    "type": "project",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "eduubessa",
+            "email": "eduubessa@gmail.com"
+        }
+    ],
+    "config": {
+        "plataform": {
+            "php": ">8.2"
+        }
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "files": [
+            "./App/Helpers/Helper.php"
+        ],
+        "psr-4": {
+            "App\\": "App/",
+            "Database\\": "Database/",
+            "ItsPossible\\": "vendor/ItsPossible/src/"
+        }
+    },
+    "require": {
+        "firebase/php-jwt": "^6.8",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
